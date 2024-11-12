@@ -12,7 +12,7 @@ import HelloWorld from './components/HelloWorld.vue';
 		</a>
 	</div>
 	<HelloWorld msg="Vite + Vue" />
-	<div>jsxBracketS2222223234234243axBe</div>
+	<div>jsxBracke234234243axBe</div>
 </template>
 
 <style scoped>
