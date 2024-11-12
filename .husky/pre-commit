@@ -1,21 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# 获取当前分支
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-# 获取源分支
-source_branch=$(git rev-parse --abbrev-ref $(git merge-base HEAD MERGE_HEAD))
-
-
-echo -e "\033[33m -------------------  当前分支"$current_branch" 正在对提交的代码执行操作 -------------------- \033[0m"
-echo -e "\033[33m -------------------  当前合并分支"$source_branch" 正在对提交的代码执行操作 -------------------- \033[0m"
-
-# 如果是尝试将test分支合并到其他分支，则阻止该操作
-if [ "$CURRENT_BRANCH" = "test" ] && [ "$TARGET_BRANCH" != "test" ]; then
-  echo "Cannot merge test branch into another branch."
-  exit 1
-fi
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
