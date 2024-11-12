@@ -16,7 +16,6 @@
   "endOfLine": "auto",
   "semi": true, 
   "overrides": [
-    
     {
       "files": "*.json",
       "options": {
