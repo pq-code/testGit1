@@ -4,6 +4,8 @@
 # 获取当前分支名称
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
+echo -e "\033[33m ------------------- 正在对提交的代码执行操作 -------------------- \033[0m"
+
 # 检查当前分支是否为 test 分支
 if [ "$current_branch" = "test" ]; then
   echo "Error: You cannot push from the 'test' branch to other branches."
