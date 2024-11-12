@@ -1,4 +1,37 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-​
-pnpm lint
+#!/bin/sh
+
+# 检查是否有待提交的文件
+if [ -z "$(git diff --cached --name-only)" ]; then
+  echo "No files to commit."
+  exit 0
+fi
+
+# 运行 ESLint 进行静态代码分析
+echo "Running ESLint..."
+npx eslint --cache --fix $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
+if [ $? -ne 0 ]; then
+  echo "ESLint found issues. Please fix them before committing."
+  exit 1
+fi
+
+# 运行 Prettier 进行代码格式化
+echo "Running Prettier..."
+npx prettier --write $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+if [ $? -ne 0 ]; then
+  echo "Prettier found issues. Please fix them before committing."
+  exit 1
+fi
+
+# 添加格式化后的文件到暂存区
+git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+
+# 运行 Jest 单元测试
+echo "Running Jest tests..."
+npx jest --passWithNoTests
+if [ $? -ne 0 ]; then
+  echo "Some tests failed. Please fix them before committing."
+  exit 1
+fi
+
+echo "All checks passed. Committing..."
+exit 0
