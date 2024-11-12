@@ -41,5 +41,5 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "All checks passed. Committing..."
+echo "全部提交..."
 exit 0
