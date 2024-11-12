@@ -49,6 +49,13 @@ fi
 # 添加格式化后的文件到暂存区
 git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
 
+# 检查是否存在冲突文件
+conflict_files=$(git ls-files -u | cut -f2 | sort -u)
+if [ -n "$conflict_files" ]; then
+  echo "存在未解决的冲突文件，不能提交。请先解决冲突。"
+  exit 1
+fi
+
 # 运行 Jest 单元测试
 echo "Running Jest tests..."
 npx jest --passWithNoTests
