@@ -12,11 +12,10 @@ export default {
 	requirePragma: false, // 是否需要在文件顶部添加特殊的注释才能进行格式化，默认为 false
 	insertPragma: false, // 是否在格式化后的文件顶部插入特殊的注释，默认为 false
 	proseWrap: 'preserve', // 是否保留 markdown 文件中的换行符，默认为 "preserve"
-	htmlWhitespaceSensitivity: 'ignore', // 指定 HTML 文件中空格敏感度的配置选项，可以是 "css"、"strict"、ignore
+	htmlWhitespaceSensitivity: 'ignore', // 指定 HTML 文件中空格敏感度的配置选项，可以是 "css"、"strict"、"ignore"
 	vueIndentScriptAndStyle: false, // 是否缩进 Vue 文件中的 <script> 和 <style> 标签，默认为 false
 	endOfLine: 'auto', // 指定换行符的风格，可以是 "auto"、"lf"、"crlf"、"cr" 四个选项
 	semi: true, // 行末是否添加分号，默认为 true
-	usePrettierrc: true, // 是否使用项目根目录下的 .prettierrc 文件，默认为 true
 	overrides: [
 		// 针对特定文件或文件类型的格式化配置
 		{
