@@ -12,6 +12,8 @@ if [ -z "$(git diff --cached --name-only)" ]; then
   exit 0
 fi
 
+npx --no-install lint-staged
+
 # 运行 ESLint 进行静态代码分析
 echo "Running ESLint..."
 npx eslint --cache --fix $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
