@@ -16,7 +16,7 @@ echo -e "\033[33m -------------------  当前分支: $current_branch 正在对�
 echo -e "\033[33m -------------------  目标分支: $target_branch 正在对提交的代码执行操作 -------------------- \033[0m"
 
 # 如果是尝试将 test 分支合并到其他分支，则阻止该操作
-if [ "$current_branch" = "test" ] && [ "$target_branch" != "test" ]; then
+if [ "$current_branch" != "test" ] && [ "$target_branch" = "test" ]; then
   echo "Cannot merge from test branch to $target_branch."
   exit 1
 fi
