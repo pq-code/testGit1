@@ -6,7 +6,6 @@ export default {
 	quoteProps: 'as-needed', // 对象属性是否使用引号，默认为 "as-needed"
 	trailingComma: 'none', // 是否使用尾随逗号（末尾的逗号），可以是 "none"、"es5"、"all" 三个选项
 	bracketSpacing: true, // 对象字面量中的括号是否有空格，默认为 true
-	jsxBracketSameLine: false, // JSX 标签的右括号是否与前一行的末尾对齐，默认为 false
 	arrowParens: 'always', // 箭头函数参数是否使用圆括号，默认为 "always"
 	rangeStart: 0, // 指定格式化的范围的起始位置
 	requirePragma: false, // 是否需要在文件顶部添加特殊的注释才能进行格式化，默认为 false
