@@ -21,3 +21,5 @@ if [ "$current_branch" != "test" ] && [ "$target_branch" = "test" ]; then
   echo "Cannot merge test branch into another branch."
   exit 1
 fi
+
+exit 0
