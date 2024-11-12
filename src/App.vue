@@ -12,7 +12,7 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
-  <div> jsxBracketSameLinejsxBrcketSameLinejsxBracketSameLinejsxBracketSameLine </div>
+  <div> jsxBracketSameLinejsxBrcketSametSameLinejsxBracketSameLine </div>
 </template>
 
 <style scoped>
