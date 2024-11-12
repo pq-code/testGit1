@@ -1,6 +1,15 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# 获取当前分支名称
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# 检查当前分支是否为 test 分支
+if [ "$current_branch" = "test" ]; then
+  echo "Error: You cannot push from the 'test' branch to other branches."
+  exit 1
+fi
+
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
   echo "No files to commit."
