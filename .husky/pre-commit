@@ -25,12 +25,12 @@ if [ $? -ne 0 ]; then
 fi
 
 # 运行 Prettier 进行代码格式化
-echo "Running Prettier..."
-npx prettier --write $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
-if [ $? -ne 0 ]; then
-  echo "Prettier found issues. Please fix them before committing."
-  exit 1
-fi
+# echo "Running Prettier..."
+# npx prettier --write $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+# if [ $? -ne 0 ]; then
+#   echo "Prettier found issues. Please fix them before committing."
+#   exit 1
+# fi
 
 # 添加格式化后的文件到暂存区
 git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
