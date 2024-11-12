@@ -35,3 +35,5 @@ fi
 
 echo "All checks passed. Committing..."
 exit 0
+
+
