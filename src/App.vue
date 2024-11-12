@@ -12,7 +12,8 @@ import HelloWorld from './components/HelloWorld.vue';
 		</a>
 	</div>
 	<HelloWorld msg="Vite + Vue" />
-	<div>jsBe</div>
+	<div>jsBe234342</div>
+	<div>jsB42</div>
 </template>
 
 <style scoped>
