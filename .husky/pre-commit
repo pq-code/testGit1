@@ -1,4 +1,5 @@
 #!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
@@ -35,5 +36,3 @@ fi
 
 echo "All checks passed. Committing..."
 exit 0
-
-
