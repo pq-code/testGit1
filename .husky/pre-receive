@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# 读取标准输入中的旧引用、新引用和引用名称（分支或标签）
+while read oldrev newrev refname; do
+    # 获取目标分支的名称
+    branch=$(git rev-parse --symbolic --abbrev-ref "$refname")
+
+    # 检查是否是向master分支推送更改
+    if [ "$branch" = "master" ]; then
+        # 检查更改是否包含从test分支的合并
+        # 注意：这里的逻辑是简化的，可能不完全准确，因为它依赖于提交历史
+        # 在实际应用中，你可能需要更复杂的逻辑来确定是否正在尝试进行不合法的合并
+        if git merge-base "$oldrev" "$newrev" | grep -q "^$(git rev-parse test)$"; then
+            echo "Error: Cannot merge test branch into master branch."
+            exit 1 # 以非零状态退出以阻止推送
+        fi
+    fi
+done
