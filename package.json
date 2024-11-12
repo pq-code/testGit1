@@ -11,7 +11,24 @@
 		"commitlint": "commitlint --config commitlint.config.js -e -V",
 		"prepare": "husky",
 		"lint": "eslint . --ext .js,.vue",
-		"format": "prettier --write 'src/**/*.{js,vue,ts,tsx,css,scss,json,md}'"
+		"format": "prettier --write 'src/**/*.{js,vue,ts,tsx,css,scss,json,md}'",
+		 "lint-staged": "lint-staged"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,js}": [
+			"eslint --config .eslintrc.js"
+		],
+		"*.{css,less,scss}": [
+			"stylelint --config .stylelintrc.js"
+		],
+		"*.{ts,tsx,js,json,html,yml,css,less,scss,md}": [
+			"prettier --write"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
 	},
 	"dependencies": {
 		"vue": "^3.5.12"
@@ -33,21 +50,5 @@
 		"vite": "^5.4.10",
 		"vue-eslint-parser": "^9.4.3",
 		"vue-tsc": "^2.1.8"
-	},
-	"husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "eslint --config .eslintrc.js"
-    ],
-    "*.{css,less,scss}": [
-      "stylelint --config .stylelintrc.js"
-    ],
-    "*.{ts,tsx,js,json,html,yml,css,less,scss,md}": [
-      "prettier --write"
-    ]
-  }
+	}
 }
