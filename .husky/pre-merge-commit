@@ -1,12 +1,13 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+
 color_red="\e[0;31m"
 color_blue="\e[34m"
 color_reset="\e[00m"
 
 # 获取当前分支
-currBranch=$(git symbolic-ref --short HEAD 2>/dev/null)
+currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
 
 IFS=$'\n' read -d '' -ra array <<< "$mergedList"
@@ -24,8 +25,10 @@ done
 
 # 如果是尝试将test分支合并到其他分支，则阻止该操作
 if $found; then
-    echo -e "${color_red}当前分支（$currBranch） 包含了 $search 分支合并记录${color_reset}"
+    echo  "当前分支（$currBranch) 包含了 $search 分支合并记录"
     echo "test禁止合并到其他分支"
+
+    git merge --abort
     exit 1
 fi
 
