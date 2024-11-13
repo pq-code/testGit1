@@ -40,7 +40,7 @@ done
 
 # 如果找到 test 分支，阻止合并操作
 if $found; then
-    echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search 分支合并记录"
+    echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search \033[0;32m 分支合并记录"
     echo "\033[0;31m test禁止合并到其他分支"
     exit 1
 fi
