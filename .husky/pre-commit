@@ -5,7 +5,7 @@
 # 获取当前分支
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行commit操作 --------------------"
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行 \033[33m commit \033[0;32m 操作 --------------------"
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then

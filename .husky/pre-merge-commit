@@ -8,7 +8,7 @@ currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
 
 # 打印当前分支信息
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行merge操作 --------------------"
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行  \033[33m merge \033[0;32m 操作 --------------------"
 
 # 检查 mergedList 是否为空
 if [ -z "$mergedList" ]; then
@@ -40,7 +40,7 @@ done
 
 # 如果找到 test 分支，阻止合并操作
 if $found; then
-    echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search 分支合并记录"
+    echo  "\033[33m 当前分支  $currBranch  \033[33m 包含了 \033[0;31m $search \033[33m 分支合并记录"
     echo "\033[0;31m test禁止合并到其他分支"
     exit 1
 fi
