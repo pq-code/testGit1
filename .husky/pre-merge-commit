@@ -6,7 +6,7 @@
 currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
 
-  merge_base=$(git merge-base HEAD MERGE_HEAD)
+merge_base=$(git merge-base HEAD MERGE_HEAD)
 
 search="test"
 found=false
