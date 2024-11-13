@@ -6,6 +6,9 @@
 currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
 
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行merge操作 --------------------"
+
+
 IFS=$'\n' read -d '' -ra array <<< "$mergedList"
 
 search="test"
@@ -13,6 +16,9 @@ found=false
 
 for item in "${array[@]}"; do
     item_without_spaces=${item//[[:space:]]/}
+    echo -e "\033[0;32m ------------------- item_without_spaces --------------------"
+
+
     if [[ "$item_without_spaces" == "$search" ]]; then
         found=true
         break
