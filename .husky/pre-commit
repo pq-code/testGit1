@@ -7,47 +7,60 @@ current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # 获取目标分支
 if git rev-parse --verify MERGE_HEAD &> /dev/null; then
-  target_branch=$(git rev-parse --abbrev-ref $(git rev-parse --verify MERGE_HEAD))
+  source_branch=$(git rev-parse --abbrev-ref $(git merge-base HEAD MERGE_HEAD))
 else
-  target_branch="N/A"
+  source_branch="N/A"
 fi
 
-echo -e "\033[33m -------------------  当前分支: $current_branch 正在对提交的代码执行操作 -------------------- \033[0m"
-echo -e "\033[33m -------------------  目标分支: $target_branch 正在对提交的代码执行操作 -------------------- \033[0m"
+echo -e "\033[33m -------------------  当前分支: $current_branch 正在对提交的代码执行commit操作 -------------------- \033[0m"
+echo -e "\033[33m -------------------  来源分支: $source_branch 正在对提交的代码执行commit操作 -------------------- \033[0m"
 
 # 如果是尝试将 test 分支合并到其他分支，则阻止该操作
-if [ "$current_branch" != "test" ] && [ "$target_branch" = "test" ]; then
-  echo "Cannot merge from test branch to $target_branch."
+if [ "$current_branch" != "test" ] && [ "$source_branch" = "test" ]; then
+  echo "test 分支禁止合并到 $source_branch."
   exit 1
 fi
 
+sh
+#!/bin/bash
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
-  echo "No files to commit."
-  exit 0
-fi
+  echo "暂存区域没有文件"
 
-npx --no-install lint-staged
+  read -p "请确定是否提交?(N/Y): " confirm </dev/tty
+  case "$confirm" in
+    n|N)
+      echo "已取消"
+      exit 1
+      ;;
+    y|Y)
+      # 选择了确认
+      # 检查是否有未暂存的修改文件
+      if [ -n "$(git diff --name-only)" ]; then
+        echo "正在暂存所有修改的文件..."
+        git add .
+      else
+        echo "没有未暂存的修改文件，无法提交。"
+        exit 1
+      fi
+      ;;
+    *)
+      echo "已取消"
+      exit 2
+      ;;
+  esac
+fi
 
 # 运行 ESLint 进行静态代码分析
 echo "Running ESLint..."
 npx eslint --cache --fix $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
 if [ $? -ne 0 ]; then
-  echo "ESLint found issues. Please fix them before committing."
+  echo "ESLint发现了问题。请在提交之前修复它们。"
   exit 1
 fi
 
-# 运行 Prettier 进行代码格式化
-# echo "Running Prettier..."
-# npx prettier --write $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
-# if [ $? -ne 0 ]; then
-#   echo "Prettier found issues. Please fix them before committing."
-#   exit 1
-# fi
-
-# 添加格式化后的文件到暂存区
-git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+npx --no-install lint-staged
 
 # 检查是否存在冲突文件
 conflict_files=$(git ls-files -u | cut -f2 | sort -u)
@@ -56,15 +69,19 @@ if [ -n "$conflict_files" ]; then
   exit 1
 fi
 
+# 添加格式化后的文件到暂存区
+git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+
+
 # 运行 Jest 单元测试
 echo "Running Jest tests..."
 npx jest --passWithNoTests
 if [ $? -ne 0 ]; then
-  echo "Some tests failed. Please fix them before committing."
+  echo "一些测试失败了。请在提交之前修复它们。"
   exit 1
 fi
 
-echo "全部提交..."
+echo -e "\033[33m -------------------  代码校验通过准备提交 ✅ -------------------- \033[0m"
 exit 0
 
 
