@@ -6,7 +6,7 @@ color_blue="\e[34m"
 color_reset="\e[00m"
 
 # 获取当前分支
-currBranch）=$(git symbolic-ref --short HEAD 2>/dev/null)
+currBranch=$(git symbolic-ref --short HEAD 2>/dev/null)
 mergedList=$(git branch --merged $currBranch)
 
 IFS=$'\n' read -d '' -ra array <<< "$mergedList"
@@ -21,9 +21,6 @@ for item in "${array[@]}"; do
         break
     fi
 done
-
-echo -e "\033[33m ---------22----------  当前分支: $currBranch） 正在对提交的代码执行操作 -------------------- \033[0m"
-echo -e "\033[33m -------------------  当前合并分支: $source_branch 正在对提交的代码执行操作 -------------------- \033[0m"
 
 # 如果是尝试将test分支合并到其他分支，则阻止该操作
 if $found; then
