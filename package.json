@@ -28,7 +28,7 @@
 	"husky": {
 		"hooks": {
 			"pre-commit": "lint-staged",
-			"post-merge": "lint-staged"
+			"pre-merge-commit": "sh .husky/pre-merge-commit"
 		}
 	},
 	"dependencies": {
