@@ -8,7 +8,7 @@ currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
 
 # 打印当前分支信息
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行  \033[33m push \033[0;32m 操作 --------------------"
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行  \033[33m push \033[0;32m 操作 --------------------\033[0;37m"
 
 # 检查 mergedList 是否为空
 if [ -z "$mergedList" ]; then
