@@ -29,7 +29,7 @@ fi
 
 # 运行 ESLint 进行静态代码分析
 echo "Running ESLint..."
-npx eslint --cache --fix $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
+npx eslint --cache --fix $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|vue)$')
 if [ $? -ne 0 ]; then
   echo "ESLint发现了问题。请在提交之前修复它们。"
   exit 1
