@@ -21,35 +21,10 @@ if [ "$current_branch" != "test" ] && [ "$source_branch" = "test" ]; then
   exit 1
 fi
 
-sh
-#!/bin/bash
-
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
   echo "暂存区域没有文件"
-
-  read -p "请确定是否提交?(N/Y): " confirm </dev/tty
-  case "$confirm" in
-    n|N)
-      echo "已取消"
-      exit 1
-      ;;
-    y|Y)
-      # 选择了确认
-      # 检查是否有未暂存的修改文件
-      if [ -n "$(git diff --name-only)" ]; then
-        echo "正在暂存所有修改的文件..."
-        git add .
-      else
-        echo "没有未暂存的修改文件，无法提交。"
-        exit 1
-      fi
-      ;;
-    *)
-      echo "已取消"
-      exit 2
-      ;;
-  esac
+  exit 1
 fi
 
 # 运行 ESLint 进行静态代码分析
@@ -83,5 +58,4 @@ fi
 
 echo -e "\033[33m -------------------  代码校验通过准备提交 ✅ -------------------- \033[0m"
 exit 0
-
 
