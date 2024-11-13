@@ -5,7 +5,7 @@
 # 获取当前分支
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行commit操作 --------------------"
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行 \033[33m commit \033[0;32m 操作 --------------------\033[0;37m"
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
@@ -16,7 +16,7 @@ fi
 npx --no-install lint-staged
 
 # 添加格式化后的文件到暂存区
-git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(vue|js|jsx|ts|tsx|json|css|scss|md)$')
 
 
 # 运行 Jest 单元测试
@@ -27,6 +27,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo -e "\033[0;32m -------------------  代码校验通过 ✅ -------------------- "
+echo -e "\033[0;32m -------------------  代码校验通过 ✅ -------------------- \033[0;37m"
 exit 0
 
