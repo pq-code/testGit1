@@ -9,10 +9,10 @@ mergedList=$(git branch --merged $currBranch)
 
 echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行merge操作 --------------------"
 
-
+ echo -e "\033[0;32m ------------------- $mergedList --------------------"
 # 将合并列表按行读取到数组中
 IFS=$'\n' read -d '' -ra array <<< "$mergedList"
-
+ echo -e "\033[0;32m ------------------- $mergedList --------------------"
 # 定义要搜索的分支名称
 search="test"
 found=false
