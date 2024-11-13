@@ -5,17 +5,11 @@
 # 获取当前分支
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-echo -e "\033[33m -------------------  当前分支: $current_branch 正在对提交的代码执行commit操作 -------------------- \033[0m"
-
-# 如果是尝试将 test 分支合并到其他分支，则阻止该操作
-if [ "$current_branch" != "test" ] && [ "$source_branch" = "test" ]; then
-  echo "test 分支禁止合并到 $source_branch."
-  exit 1
-fi
+echo -e "\033[0;32m -------------------  当前分支: $current_branch 正在对提交的代码执行commit操作 -------------------- \033[0;32m"
 
 # 检查是否有待提交的文件
 if [ -z "$(git diff --cached --name-only)" ]; then
-  echo "暂存区域没有文件"
+  echo -e "\033[33m 暂存区域没有文件"
   exit 1
 fi
 
@@ -29,10 +23,10 @@ git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|t
 echo "Running Jest tests..."
 npx jest --passWithNoTests
 if [ $? -ne 0 ]; then
-  echo "一些测试失败了。请在提交之前修复它们。"
+  echo -e "\033[0;31m 一些测试失败了。请在提交之前修复它们。"
   exit 1
 fi
 
-echo -e "\033[33m -------------------  代码校验通过准备提交 ✅ -------------------- \033[0m"
+echo -e "\033[33m -------------------  代码校验通过准备提交 ✅ -------------------- \033[33m"
 exit 0
 
