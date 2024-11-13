@@ -3,44 +3,30 @@
 
 
 # 获取当前分支
-currBranch=$(git rev-parse --abbrev-ref HEAD)
-mergedList=$(git branch --merged $currBranch)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
 
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $current_branch \033[0;32m 正在对提交的代码执行 \033[33m commit \033[0;32m 操作 --------------------\033[0;37m"
 
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行merge操作 --------------------"
-
- echo -e "\033[0;32m ------------------- $mergedList --------------------"
-
-# 将合并列表按行读取到数组中
-if [ -z "$mergedList" ]; then
-    echo "\033[0;33m 当前分支没有任何合并记录。"
-else
-    IFS=$'\n' read -r -d '' -a array <<< "$mergedList"
+# 检查是否有待提交的文件
+if [ -z "$(git diff --cached --name-only)" ]; then
+  echo -e "\033[33m 暂存区域没有文件"
+  exit 1
 fi
 
+npx --no-install lint-staged
 
- echo -e "\033[0;32m ------------------- $mergedList --------------------"
-# 定义要搜索的分支名称
-search="test"
-found=false
+# 添加格式化后的文件到暂存区
+git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(vue|js|jsx|ts|tsx|json|css|scss|md)$')
 
-# 遍历合并列表，检查是否存在 test 分支
-for item in "${array[@]}"; do
-    item_without_spaces=${item//[[:space:]]/}
-    echo -e "\033[0;32m ------------------- $item_without_spaces --------------------"
 
-    if [[ "$item_without_spaces" == "$search" ]]; then
-        found=true
-        break
-    fi
-done
-
-# 如果是尝试将test分支合并到其他分支，则阻止该操作
-if $found; then
-    echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search 分支合并记录"
-    echo "\033[0;31m test禁止合并到其他分支"
-
-    exit 1
+# 运行 Jest 单元测试
+echo "Running Jest tests..."
+npx jest --passWithNoTests
+if [ $? -ne 0 ]; then
+  echo -e "\033[0;31m 一些测试失败了。请在提交之前修复它们。"
+  exit 1
 fi
 
+echo -e "\033[0;32m -------------------  代码校验通过 ✅ -------------------- \033[0;37m"
 exit 0
+
