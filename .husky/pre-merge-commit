@@ -5,8 +5,6 @@
 # 获取当前分支
 currBranch=$(git rev-parse --abbrev-ref HEAD)
 mergedList=$(git branch --merged $currBranch)
-  source_branch=$(git rev-parse --abbrev-ref $(git merge-base HEAD MERGE_HEAD))
-
 
 search="test"
 found=false
@@ -16,8 +14,6 @@ echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033
 
 IFS=$'\n' read -d '' -ra array <<< "$mergedList"
 
-
-echo -e "\033[0;32m ------------------- $source_branch --------------------"
 
   echo -e "\033[0;32m ------------------- $array --------------------"
 
