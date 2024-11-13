@@ -14,6 +14,8 @@ IFS=$'\n' read -d '' -ra array <<< "$mergedList"
 search="test"
 found=false
 
+  echo -e "\033[0;32m ------------------- $array --------------------"
+
 for item in "${array[@]}"; do
     item_without_spaces=${item//[[:space:]]/}
     echo -e "\033[0;32m ------------------- $item_without_spaces --------------------"
