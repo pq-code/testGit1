@@ -16,7 +16,7 @@ found=false
 
 for item in "${array[@]}"; do
     item_without_spaces=${item//[[:space:]]/}
-    echo -e "\033[0;32m ------------------- item_without_spaces --------------------"
+    echo -e "\033[0;32m ------------------- $item_without_spaces --------------------"
 
 
     if [[ "$item_without_spaces" == "$search" ]]; then
