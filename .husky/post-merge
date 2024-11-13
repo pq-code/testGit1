@@ -1,25 +1,35 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+color_red="\e[0;31m"
+color_blue="\e[34m"
+color_reset="\e[00m"
+
 # 获取当前分支
-current_branch=$(git rev-parse --abbrev-ref HEAD)
+currBranch）=$(git symbolic-ref --short HEAD 2>/dev/null)
+mergedList=$(git branch --merged $currBranch)
 
-# 尝试获取目标分支
-if git rev-parse --verify MERGE_HEAD &> /dev/null; then
-  target_branch=$(git rev-parse --abbrev-ref @{u})
-  source_branch=$(git rev-parse --abbrev-ref $(git merge-base HEAD MERGE_HEAD))
-else
-  target_branch="N/A"
-  source_branch="N/A"
-fi
+IFS=$'\n' read -d '' -ra array <<< "$mergedList"
 
-echo -e "\033[33m -------------------  当前分支: $current_branch 正在对提交的代码执行操作 -------------------- \033[0m"
-echo -e "\033[33m ---------2----------  当前合并分支: $source_branch 正在对提交的代码执行操作 -------------------- \033[0m"
+search="test"
+found=false
+
+for item in "${array[@]}"; do
+    item_without_spaces=${item//[[:space:]]/}
+    if [[ "$item_without_spaces" == "$search" ]]; then
+        found=true
+        break
+    fi
+done
+
+echo -e "\033[33m ---------22----------  当前分支: $currBranch） 正在对提交的代码执行操作 -------------------- \033[0m"
+echo -e "\033[33m -------------------  当前合并分支: $source_branch 正在对提交的代码执行操作 -------------------- \033[0m"
 
 # 如果是尝试将test分支合并到其他分支，则阻止该操作
-if [ "$current_branch" != "test" ] && [ "$target_branch" = "test" ]; then
-  echo "Cannot merge test branch into another branch."
-  exit 1
+if $found; then
+    echo -e "${color_red}当前分支（$currBranch） 包含了 $search 分支合并记录${color_reset}"
+    echo "test禁止合并到其他分支"
+    exit 1
 fi
 
 exit 0
