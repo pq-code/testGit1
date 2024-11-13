@@ -1,6 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 
 # 获取当前分支
 currBranch=$(git rev-parse --abbrev-ref HEAD)
@@ -24,7 +22,6 @@ if $found; then
     echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search 分支合并记录"
     echo "\033[0;31m test禁止合并到其他分支"
 
-    git merge --abort
     exit 1
 fi
 
