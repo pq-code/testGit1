@@ -16,7 +16,8 @@ fi
 npx --no-install lint-staged
 
 # 添加格式化后的文件到暂存区
-git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|json|css|scss|md)$')
+git add $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(vue|js|jsx|ts|tsx|json|css|scss|md)$')
+
 
 
 # 运行 Jest 单元测试
