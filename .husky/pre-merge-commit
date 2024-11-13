@@ -3,20 +3,28 @@
 
 # 获取当前分支
 currBranch=$(git rev-parse --abbrev-ref HEAD)
+
+# 获取当前分支已经合并的分支列表
 mergedList=$(git branch --merged $currBranch)
 
-echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行merge操作 --------------------"
+# 打印当前分支信息
+echo -e "\033[0;32m -------------------  当前分支: \033[33m $currBranch \033[0;32m 正在对提交的代码执行push操作 --------------------"
 
- echo -e "\033[0;32m ------------------- $mergedList --------------------"
-
-# 将合并列表按行读取到数组中
+# 检查 mergedList 是否为空
 if [ -z "$mergedList" ]; then
     echo "\033[0;33m 当前分支没有任何合并记录。"
-else
-    IFS=$'\n' read -r -d '' -a array <<< "$mergedList"
+    exit 0
 fi
 
- echo -e "\033[0;32m ------------------- $mergedList --------------------"
+# 确保换行符是 Unix 格式的
+mergedList=$(echo "$mergedList" | tr '\r' '\n')
+
+# 使用 while 循环读取每一行
+array=()
+while IFS= read -r line; do
+    array+=("$line")
+done <<< "$mergedList"
+
 # 定义要搜索的分支名称
 search="test"
 found=false
@@ -24,20 +32,18 @@ found=false
 # 遍历合并列表，检查是否存在 test 分支
 for item in "${array[@]}"; do
     item_without_spaces=${item//[[:space:]]/}
-    echo -e "\033[0;32m ------------------- $item_without_spaces --------------------"
-
-    if [[ "$item_without_spaces" == "$search" ]]; then
+    if [ "$item_without_spaces" == "$search" ]; then
         found=true
         break
     fi
 done
 
-# 如果是尝试将test分支合并到其他分支，则阻止该操作
+# 如果找到 test 分支，阻止合并操作
 if $found; then
     echo  "\033[33m 当前分支 \033[0;32m  $currBranch  包含了 \033[0;31m $search 分支合并记录"
     echo "\033[0;31m test禁止合并到其他分支"
-
     exit 1
 fi
 
+# 如果未找到 test 分支，允许合并操作
 exit 0
